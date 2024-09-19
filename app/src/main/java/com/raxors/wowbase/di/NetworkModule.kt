@@ -2,10 +2,12 @@ package com.raxors.wowbase.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.raxors.wowbase.data.api.WoWApi
+import com.raxors.wowbase.utils.AuthManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -23,11 +25,20 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder().apply {
+    fun provideOkHttpClient(authManager: AuthManager): OkHttpClient = OkHttpClient.Builder().apply {
         addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
+        addNetworkInterceptor { chain ->
+            val token = runBlocking {
+                authManager.readAuthState().accessToken
+            }
+            val request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer $token")
+                .build()
+            chain.proceed(request)
+        }
     }.build()
 
     @Provides

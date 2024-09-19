@@ -1,7 +1,9 @@
 package com.raxors.wowbase.ui.main
 
+import net.openid.appauth.AuthState
+
 data class MainScreenState(
-    val isLoading: Boolean = false,
-    val isAuthenticated: Boolean = false,
-    val error: String? = null
+    val isLoading: Boolean = true,
+    val authState: AuthState? = null,
+    val error: Exception? = null
 )
