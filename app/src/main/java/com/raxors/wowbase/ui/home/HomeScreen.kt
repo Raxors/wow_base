@@ -2,7 +2,7 @@ package com.raxors.wowbase.ui.home
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.raxors.wowbase.navigation.BaseScreen
+import com.raxors.wowbase.core.base.BaseScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
