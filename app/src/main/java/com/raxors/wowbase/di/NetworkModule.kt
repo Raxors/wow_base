@@ -1,11 +1,14 @@
 package com.raxors.wowbase.di
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.raxors.wowbase.data.api.WoWApi
 import com.raxors.wowbase.utils.AuthManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -25,11 +28,15 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(authManager: AuthManager): OkHttpClient = OkHttpClient.Builder().apply {
+    fun provideOkHttpClient(
+        @ApplicationContext context: Context,
+        authManager: AuthManager
+    ): OkHttpClient = OkHttpClient.Builder().apply {
         addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
+        addInterceptor(ChuckerInterceptor(context))
         addNetworkInterceptor { chain ->
             val token = runBlocking {
                 authManager.readAuthState().accessToken

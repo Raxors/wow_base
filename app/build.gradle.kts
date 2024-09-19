@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+//    implementation("com.github.skydoves:retrofit-adapters-result:1.0.12")
 
     //Hilt
     implementation(libs.hilt.android)
@@ -94,6 +95,10 @@ dependencies {
 
     // SplashScreen
     implementation(libs.androidx.core.splashscreen)
+
+    // Chucker
+    debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

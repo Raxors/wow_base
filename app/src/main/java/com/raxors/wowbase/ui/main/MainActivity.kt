@@ -8,33 +8,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.raxors.wowbase.ui.creatures.creature_list.CreatureListScreen
 import com.raxors.wowbase.ui.home.HomeScreen
-import com.raxors.wowbase.ui.loading.LoadingScreen
+import com.raxors.wowbase.ui.common.LoadingScreen
 import com.raxors.wowbase.ui.theme.WoWBaseTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
@@ -90,7 +79,7 @@ fun RootNavGraph(
     val state by viewModel.state.collectAsState()
     val authState = state.authState
     val initialRoute = if (state.authState != null && authState != null && authState.isAuthorized) {
-        HomeScreen
+        CreatureListScreen //HomeScreen
     } else {
         if (authState?.isAuthorized == false) {
             viewModel.doAuth(authResultLauncher)
@@ -108,6 +97,9 @@ fun RootNavGraph(
         }
         composable<HomeScreen> {
             HomeScreen.Screen()
+        }
+        composable<CreatureListScreen> {
+            CreatureListScreen.Screen(navController)
         }
     }
 }
