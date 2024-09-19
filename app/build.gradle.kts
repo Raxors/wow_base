@@ -15,10 +15,14 @@ android {
         applicationId = "com.raxors.wowbase"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 5
+        versionName = "0.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+//        addManifestPlaceholders(
+//            mapOf("appAuthRedirectScheme" to "https://raxors.ru/wow-oauth")
+//        )
     }
 
     buildTypes {
@@ -84,6 +88,12 @@ dependencies {
     implementation(libs.security.crypto.datastore.preferences)
     // utility library for datastore encryption
     implementation(libs.androidx.security.crypto.ktx)
+
+    // OAuth
+    implementation(libs.appauth)
+
+    // SplashScreen
+    implementation(libs.androidx.core.splashscreen)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
